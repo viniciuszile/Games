@@ -1,7 +1,7 @@
 [
   {
     "nome": "Celeste",
-    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/buckshot.jpg",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/celeste.jpg",
     "plataforma": "Steam (PC - Steam)",
     "inicio": "03/01/2025",
     "termino": "08/01/2025",
@@ -640,6 +640,42 @@
     "dificuldade": "-",
     "replay": "Não",
     "nota": "-"
+  },
+  {
+    "nome": "-",
+    "imagem": "/Fotos-main/nier.png",
+    "plataforma": "-",
+    "inicio": "-",
+    "termino": "-",
+    "situacao": "--",
+    "Horas De Jogo": "-",
+    "dificuldade": "--",
+    "replay": "--",
+    "nota": "--"
+  },
+  {
+    "nome": "",
+    "imagem": "/Fotos-main/nier.png",
+    "plataforma": "",
+    "inicio": "",
+    "termino": "",
+    "situacao": "",
+    "Horas De Jogo": "",
+    "dificuldade": "",
+    "replay": "",
+    "nota": ""
+  },
+  {
+    "nome": "a",
+    "imagem": "/Fotos-main/nier.png",
+    "plataforma": "a",
+    "inicio": "",
+    "termino": "aaa",
+    "situacao": "aaa",
+    "Horas De Jogo": "aaaaa",
+    "dificuldade": "a",
+    "replay": "",
+    "nota": ""
   },
   {
     "nome": "nier ",
