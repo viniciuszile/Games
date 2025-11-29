@@ -16,7 +16,7 @@ function Home() {
 
   // Carregamento do JSON
   useEffect(() => {
-    fetch("../../Data/jogos.json")
+    fetch("https://raw.githubusercontent.com/viniciuszile/Games/refs/heads/main/public/Data/jogos.json")
       .then((res) => {
         if (!res.ok) throw new Error("Erro ao buscar os dados");
         return res.json();
@@ -199,3 +199,4 @@ function Home() {
 }
 
 export default Home;
+
