@@ -1,7 +1,7 @@
 [
   {
     "nome": "Celeste",
-    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/celeste.jpg",
+    "imagem": "/Fotos-main/bioshock.png",
     "plataforma": "Steam (PC - Steam)",
     "inicio": "03/01/2025",
     "termino": "08/01/2025",
@@ -570,7 +570,7 @@
     "nota": "9"
   },
   {
-    "nome": "grand theft auto v",
+    "nome": "GTA V",
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/gtav.png",
     "plataforma": "PC - Epic Games",
     "inicio": "06/11/2025",
