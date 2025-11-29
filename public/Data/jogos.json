@@ -640,5 +640,53 @@
     "dificuldade": "-",
     "replay": "Não",
     "nota": "-"
+  },
+  {
+    "nome": "-",
+    "imagem": "/Fotos-main/nier.png",
+    "plataforma": "-",
+    "inicio": "-",
+    "termino": "-",
+    "situacao": "--",
+    "Horas De Jogo": "-",
+    "dificuldade": "--",
+    "replay": "--",
+    "nota": "--"
+  },
+  {
+    "nome": "",
+    "imagem": "/Fotos-main/nier.png",
+    "plataforma": "",
+    "inicio": "",
+    "termino": "",
+    "situacao": "",
+    "Horas De Jogo": "",
+    "dificuldade": "",
+    "replay": "",
+    "nota": ""
+  },
+  {
+    "nome": "a",
+    "imagem": "/Fotos-main/nier.png",
+    "plataforma": "a",
+    "inicio": "",
+    "termino": "aaa",
+    "situacao": "aaa",
+    "Horas De Jogo": "aaaaa",
+    "dificuldade": "a",
+    "replay": "",
+    "nota": ""
+  },
+  {
+    "nome": "nier ",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/nier.png",
+    "plataforma": "-",
+    "inicio": "-",
+    "termino": "-",
+    "situacao": "-",
+    "Horas De Jogo": "-",
+    "dificuldade": "-",
+    "replay": "-",
+    "nota": "-"
   }
 ]
