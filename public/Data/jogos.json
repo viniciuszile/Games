@@ -642,9 +642,9 @@
     "nota": "-"
   },
   {
-    "nome": "Nier ",
+    "nome": "Nier",
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/nier.png",
-    "plataforma": "PC - Steam",
+    "plataforma": "Pc Steam",
     "inicio": "-",
     "termino": "-",
     "situacao": "-",
@@ -652,5 +652,17 @@
     "dificuldade": "-",
     "replay": "-",
     "nota": "-"
+  },
+  {
+    "nome": "teste",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/jan jan.png",
+    "plataforma": "teste",
+    "inicio": "teste",
+    "termino": "teste",
+    "situacao": "",
+    "Horas De Jogo": "teste",
+    "dificuldade": "teste",
+    "replay": "teste",
+    "nota": "teste"
   }
 ]
