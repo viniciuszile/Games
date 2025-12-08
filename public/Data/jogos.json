@@ -650,5 +650,17 @@
     "dificuldade": "-",
     "replay": "-",
     "nota": "-"
+  },
+  {
+    "nome": "Uncharted: The Lost Legacy\n",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/Uncharted The Lost Legacy.webp",
+    "plataforma": "Steam - PC",
+    "inicio": "30/11/2025",
+    "termino": "07/12/2025",
+    "situacao": "Concluido",
+    "Horas De Jogo": "7",
+    "dificuldade": "B",
+    "replay": "Não",
+    "nota": "7"
   }
 ]
