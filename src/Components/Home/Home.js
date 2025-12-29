@@ -1,10 +1,10 @@
-// Home.js atualizado com suporte a Concluído / Em andamento / dropado
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./home.css";
 
 function Home() {
   const navigate = useNavigate();
+
   const [jogos, setJogos] = useState([]);
   const [flipped, setFlipped] = useState({});
   const [loading, setLoading] = useState(true);
@@ -12,11 +12,16 @@ function Home() {
   const [filtro, setFiltro] = useState("todos");
   const [ordenacao, setOrdenacao] = useState(null);
   const [menuAberto, setMenuAberto] = useState(false);
+
   const menuRef = useRef(null);
 
-  // Carregamento do JSON
+  /* ========================= */
+  /* 📥 Carregar JSON          */
+  /* ========================= */
   useEffect(() => {
-    fetch("https://raw.githubusercontent.com/viniciuszile/Games/refs/heads/main/public/Data/jogos.json")
+    fetch(
+      "./Data/jogos.json"
+    )
       .then((res) => {
         if (!res.ok) throw new Error("Erro ao buscar os dados");
         return res.json();
@@ -26,13 +31,15 @@ function Home() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Erro ao carregar os jogos:", err);
-        setErro("Falha ao carregar os jogos localmente.");
+        console.error(err);
+        setErro("Falha ao carregar os jogos.");
         setLoading(false);
       });
   }, []);
 
-  // Girar card
+  /* ========================= */
+  /* 🔄 Flip                  */
+  /* ========================= */
   function toggleFlip(index) {
     setFlipped((prev) => ({
       ...prev,
@@ -40,34 +47,40 @@ function Home() {
     }));
   }
 
-  // Normalizar acentos
+  /* ========================= */
+  /* 🔤 Utilidades             */
+  /* ========================= */
   function removerAcentos(str) {
     if (typeof str !== "string") return "";
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
-  // Verificar concluído
   function isConcluido(situacao) {
     if (!situacao) return false;
     const n = removerAcentos(situacao).toLowerCase().trim();
     return n === "concluido";
   }
 
-  // Verificar dropado
-  function isdropado(situacao) {
+  function isDropado(situacao) {
     if (!situacao) return false;
     const n = removerAcentos(situacao).toLowerCase().trim();
     return n === "dropado";
   }
 
-  // Horas jogadas (para ordenação)
   function extrairHoras(jogo) {
     const valor = jogo["Horas De Jogo"]?.trim() || "";
     const match = valor.match(/\d+/);
     return match ? parseInt(match[0], 10) : 0;
   }
 
-  // Ordenações
+  function extrairRank(jogo) {
+    const r = parseInt(jogo.Rank_25, 10);
+    return isNaN(r) ? 999 : r;
+  }
+
+  /* ========================= */
+  /* 🔃 Ordenações             */
+  /* ========================= */
   function ordenarPorNome(a, b) {
     return (a.nome || "").localeCompare(b.nome || "");
   }
@@ -76,26 +89,51 @@ function Home() {
     return extrairHoras(a) - extrairHoras(b);
   }
 
-  // Aplicar filtros
+  function ordenarPorRankAsc(a, b) {
+    return extrairRank(a) - extrairRank(b);
+  }
+
+  function ordenarPorRankDesc(a, b) {
+    return extrairRank(b) - extrairRank(a);
+  }
+
+  /* ========================= */
+  /* 🎯 Filtros                */
+  /* ========================= */
   let jogosFiltrados = jogos.filter((jogo) => {
+    if (
+      (ordenacao === "rank-asc" || ordenacao === "rank-desc") &&
+      extrairRank(jogo) >= 999
+    ) {
+      return false;
+    }
+
     if (filtro === "concluidos") return isConcluido(jogo.situacao);
-    if (filtro === "Dropado") return isdropado(jogo.situacao);
+    if (filtro === "dropado") return isDropado(jogo.situacao);
     if (filtro === "em-andamento")
-      return !isConcluido(jogo.situacao) && !isdropado(jogo.situacao);
+      return !isConcluido(jogo.situacao) && !isDropado(jogo.situacao);
+
     return true;
   });
 
-  // Aplicar ordenação
   if (ordenacao) {
     jogosFiltrados = [...jogosFiltrados];
 
     if (ordenacao === "nome-asc") jogosFiltrados.sort(ordenarPorNome);
-    else if (ordenacao === "nome-desc") jogosFiltrados.sort((a, b) => ordenarPorNome(b, a));
-    else if (ordenacao === "tempo-asc") jogosFiltrados.sort(ordenarPorTempo);
-    else if (ordenacao === "tempo-desc") jogosFiltrados.sort((a, b) => ordenarPorTempo(b, a));
+    if (ordenacao === "nome-desc")
+      jogosFiltrados.sort((a, b) => ordenarPorNome(b, a));
+
+    if (ordenacao === "tempo-asc") jogosFiltrados.sort(ordenarPorTempo);
+    if (ordenacao === "tempo-desc")
+      jogosFiltrados.sort((a, b) => ordenarPorTempo(b, a));
+
+    if (ordenacao === "rank-asc") jogosFiltrados.sort(ordenarPorRankAsc);
+    if (ordenacao === "rank-desc") jogosFiltrados.sort(ordenarPorRankDesc);
   }
 
-  // Fechar menu ao clicar fora
+  /* ========================= */
+  /* ❌ Fechar menu fora       */
+  /* ========================= */
   useEffect(() => {
     function handleClickOutside(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -109,51 +147,56 @@ function Home() {
   if (loading) return <p style={{ color: "#fff" }}>Carregando...</p>;
   if (erro) return <p style={{ color: "red" }}>{erro}</p>;
 
+  /* ========================= */
+  /* 🧮 Contadores             */
+  /* ========================= */
+  const totalConcluidos = jogos.filter((j) => isConcluido(j.situacao)).length;
+  const totalDropados = jogos.filter((j) => isDropado(j.situacao)).length;
+  const totalEmAndamento = jogos.length - totalConcluidos - totalDropados;
+
+  /* ========================= */
+  /* 🖥️ Render                 */
+  /* ========================= */
   return (
     <>
-      {/* Header */}
       <header className="status-header">
-        <div>🎯 <strong>Zerados:</strong> {jogos.filter((j) => isConcluido(j.situacao)).length}</div>
-        <div>🔥 <strong>Em andamento:</strong> {jogos.filter((j) => !isConcluido(j.situacao) && !isdropado(j.situacao)).length}</div>
-        <div>❌ <strong>Dropado:</strong> {jogos.filter((j) => isdropado(j.situacao)).length}</div>
+        <div>🎯 <strong>Zerados:</strong> {totalConcluidos}</div>
+        <div>🔥 <strong>Em andamento:</strong> {totalEmAndamento}</div>
+        <div>❌ <strong>Dropado:</strong> {totalDropados}</div>
+        <div>📦 <strong>Total:</strong> {jogos.length}</div>
       </header>
 
-      {/* Botão filtro */}
       <button className="filtro-toggle" onClick={() => setMenuAberto(!menuAberto)}>
         🎮 Filtros
       </button>
 
-      {/* Menu filtros */}
       {menuAberto && (
         <div className="menu-flutuante" ref={menuRef}>
           <h4>Filtrar por:</h4>
-
-          <button className={filtro === "todos" ? "ativo" : ""} onClick={() => setFiltro("todos")}>Todos</button>
-          <button className={filtro === "concluidos" ? "ativo" : ""} onClick={() => setFiltro("concluidos")}>Concluídos</button>
-          <button className={filtro === "em-andamento" ? "ativo" : ""} onClick={() => setFiltro("em-andamento")}>Em andamento</button>
-          <button className={filtro === "Dropado" ? "ativo" : ""} onClick={() => setFiltro("Dropado")}>Dropado</button>
+          <button onClick={() => setFiltro("todos")}>Todos</button>
+          <button onClick={() => setFiltro("concluidos")}>Concluídos</button>
+          <button onClick={() => setFiltro("em-andamento")}>Em andamento</button>
+          <button onClick={() => setFiltro("dropado")}>Dropado</button>
 
           <h4>Ordenar por:</h4>
-          <button onClick={() => setOrdenacao(ordenacao === "nome-asc" ? "nome-desc" : "nome-asc")}>
-            Ordem alfabética
-          </button>
-          <button onClick={() => setOrdenacao(ordenacao === "tempo-asc" ? "tempo-desc" : "tempo-asc")}>
-            Tempo de jogo
-          </button>
+          <button onClick={() => setOrdenacao("nome-asc")}>Nome</button>
+          <button onClick={() => setOrdenacao("tempo-asc")}>Tempo</button>
+          <button onClick={() => setOrdenacao("rank-asc")}>🏆 Rank 2025</button>
+                    <button onClick={() => navigate("/top3")}>🏆 Top 3</button>
 
-          <button onClick={() => setOrdenacao(null)}>Limpar ordenação</button>
+          <button onClick={() => setOrdenacao(null)}>Limpar</button>
+
         </div>
       )}
 
-      {/* Cards */}
       <div className="container_card">
         {jogosFiltrados.map((jogo, index) => {
-          const classeEstado =
-            isConcluido(jogo.situacao)
-              ? "concluido"
-              : isdropado(jogo.situacao)
-              ? "dropado"
-              : "em-andamento";
+          const dropado = isDropado(jogo.situacao);
+          const classeEstado = isConcluido(jogo.situacao)
+            ? "concluido"
+            : dropado
+            ? "dropado"
+            : "em-andamento";
 
           return (
             <div
@@ -161,23 +204,19 @@ function Home() {
               className={`card ${classeEstado} ${flipped[index] ? "flipped" : ""}`}
               onClick={() => toggleFlip(index)}
             >
-              {/* Frente */}
               <div className="card-front">
                 <img src={jogo.imagem} alt={jogo.nome} />
               </div>
 
-              {/* Verso */}
               <div className="card-back">
-                {/* dropado → mostra Motivo / Plano */}
-                {isdropado(jogo.situacao) ? (
+                {dropado ? (
                   <>
-                    {jogo.plataforma && <p><strong>Plataforma:</strong> {jogo.plataforma}</p>}
-                    {jogo.inicio && <p><strong>Início:</strong> {jogo.inicio}</p>}
-                    {jogo.Motivo && <p><strong>Motivo:</strong> {jogo.Motivo}</p>}
-                    {jogo["Plano de ação"] && <p><strong>Plano de ação:</strong> {jogo["Plano de ação"]}</p>}
+                    <p><strong>Plataforma:</strong> {jogo.plataforma || "-"}</p>
+                    <p><strong>Início:</strong> {jogo.inicio || "-"}</p>
+                    <p><strong>Motivo:</strong> {jogo.Motivo || "-"}</p>
+                    <p><strong>Plano de ação:</strong> {jogo["Plano de ação"] || "-"}</p>
                   </>
                 ) : (
-                  /* Normal */
                   <>
                     <p><strong>Plataforma:</strong> {jogo.plataforma || "-"}</p>
                     <p><strong>Início:</strong> {jogo.inicio || "-"}</p>
@@ -187,6 +226,8 @@ function Home() {
                     <p><strong>Dificuldade:</strong> {jogo.dificuldade || "-"}</p>
                     <p><strong>Replay:</strong> {jogo.replay || "-"}</p>
                     <p><strong>Nota:</strong> {jogo.nota || "-"}</p>
+
+                
                   </>
                 )}
               </div>
@@ -199,4 +240,3 @@ function Home() {
 }
 
 export default Home;
-
