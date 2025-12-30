@@ -308,7 +308,6 @@
     "Motivo": "Formatei o PC e perdi o feeling pelo jogo",
     "Plano de ação": "Voltar a jogar, antes vou zerar o 1 e o 2",
     "Rank_25": "999"
-    
   },
   {
     "nome": "Animal Well",
@@ -594,25 +593,23 @@
     "nome": "Nine Sols",
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/nine.png",
     "plataforma": "PC - Steam",
-    "inicio": "28/★★★★★/2025",
+    "inicio": "28/10/2025",
     "situacao": "Dropado",
     "Horas De Jogo": "-",
     "Motivo": "sem graca jogo friv",
-    "Plano de ação": "pretendo voltar um dia",
-    "Rank_25": "999"
+    "Plano de ação": "pretendo voltar um dia"
   },
   {
     "nome": "God of war ",
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/gow.png",
     "plataforma": "PC - Steam",
-    "inicio": "29/★★★★★/2025",
+    "inicio": "29/10/2025",
     "termino": "11/11/2025",
-    "situacao": "Concluido",
+    "situacao": "",
     "Horas De Jogo": "15",
     "dificuldade": "A",
     "replay": "Sim",
-    "nota": "★★★★★",
-    "Rank_25": "999"
+    "nota": "★★★★★"
   },
   {
     "nome": "GTA V",
@@ -691,7 +688,7 @@
     "replay": "Não",
     "nota": "★★★★★",
     "Rank_25": "4"
-  }, 
+  },
   {
     "nome": "Uncharted: The Lost Legacy\n",
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/Uncharted The Lost Legacy.webp",
@@ -704,7 +701,7 @@
     "replay": "Não",
     "nota": "★★★☆☆",
     "Rank_25": "21"
-  }, 
+  },
   {
     "nome": "Star Wars Jedi: Fallen Order",
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/jedi.png",
@@ -728,7 +725,18 @@
     "Horas De Jogo": "-",
     "dificuldade": "-",
     "replay": "Não",
-    "nota": "-",
-    "Rank_25": "-"
+    "nota": "-"
+  },
+  {
+    "nome": "Assassin's Creed Valhalla",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/valhala.png",
+    "plataforma": "Steam - PC",
+    "inicio": "18/12/2025",
+    "termino": "-",
+    "situacao": "-",
+    "Horas De Jogo": "-",
+    "dificuldade": "-",
+    "replay": "Não",
+    "nota": "-"
   }
 ]
