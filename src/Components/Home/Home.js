@@ -20,7 +20,7 @@ function Home() {
   /* ========================= */
   useEffect(() => {
     fetch(
-      "./Data/jogos.json"
+      "https://raw.githubusercontent.com/viniciuszile/Games/refs/heads/main/public/Data/jogos.json"
     )
       .then((res) => {
         if (!res.ok) throw new Error("Erro ao buscar os dados");
@@ -30,8 +30,7 @@ function Home() {
         setJogos(data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         setErro("Falha ao carregar os jogos.");
         setLoading(false);
       });
@@ -56,14 +55,12 @@ function Home() {
   }
 
   function isConcluido(situacao) {
-    if (!situacao) return false;
-    const n = removerAcentos(situacao).toLowerCase().trim();
+    const n = removerAcentos(situacao || "").toLowerCase().trim();
     return n === "concluido";
   }
 
   function isDropado(situacao) {
-    if (!situacao) return false;
-    const n = removerAcentos(situacao).toLowerCase().trim();
+    const n = removerAcentos(situacao || "").toLowerCase().trim();
     return n === "dropado";
   }
 
@@ -166,7 +163,10 @@ function Home() {
         <div>📦 <strong>Total:</strong> {jogos.length}</div>
       </header>
 
-      <button className="filtro-toggle" onClick={() => setMenuAberto(!menuAberto)}>
+      <button
+        className="filtro-toggle"
+        onClick={() => setMenuAberto(!menuAberto)}
+      >
         🎮 Filtros
       </button>
 
@@ -182,10 +182,9 @@ function Home() {
           <button onClick={() => setOrdenacao("nome-asc")}>Nome</button>
           <button onClick={() => setOrdenacao("tempo-asc")}>Tempo</button>
           <button onClick={() => setOrdenacao("rank-asc")}>🏆 Rank 2025</button>
-                    <button onClick={() => navigate("/top3")}>🏆 Top 3</button>
+          <button onClick={() => navigate("/top3")}>🏆 Top 3</button>
 
           <button onClick={() => setOrdenacao(null)}>Limpar</button>
-
         </div>
       )}
 
@@ -201,7 +200,9 @@ function Home() {
           return (
             <div
               key={index}
-              className={`card ${classeEstado} ${flipped[index] ? "flipped" : ""}`}
+              className={`card ${classeEstado} ${
+                flipped[index] ? "flipped" : ""
+              }`}
               onClick={() => toggleFlip(index)}
             >
               <div className="card-front">
@@ -211,23 +212,21 @@ function Home() {
               <div className="card-back">
                 {dropado ? (
                   <>
-                    <p><strong>Plataforma:</strong> {jogo.plataforma || "-"}</p>
-                    <p><strong>Início:</strong> {jogo.inicio || "-"}</p>
-                    <p><strong>Motivo:</strong> {jogo.Motivo || "-"}</p>
-                    <p><strong>Plano de ação:</strong> {jogo["Plano de ação"] || "-"}</p>
+                    <p className="campo plataforma"><strong>Plataforma:</strong> {jogo.plataforma || "-"}</p>
+                    <p className="campo inicio"><strong>Início:</strong> {jogo.inicio || "-"}</p>
+                    <p className="campo motivo"><strong>Motivo:</strong> {jogo.Motivo || "-"}</p>
+                    <p className="campo plano"><strong>Plano de ação:</strong> {jogo["Plano de ação"] || "-"}</p>
                   </>
                 ) : (
                   <>
-                    <p><strong>Plataforma:</strong> {jogo.plataforma || "-"}</p>
-                    <p><strong>Início:</strong> {jogo.inicio || "-"}</p>
-                    <p><strong>Término:</strong> {jogo.termino || "-"}</p>
-                    <p><strong>Situação:</strong> {jogo.situacao || "-"}</p>
-                    <p><strong>Horas:</strong> {extrairHoras(jogo)}h</p>
-                    <p><strong>Dificuldade:</strong> {jogo.dificuldade || "-"}</p>
-                    <p><strong>Replay:</strong> {jogo.replay || "-"}</p>
-                    <p><strong>Nota:</strong> {jogo.nota || "-"}</p>
-
-                
+                    <p className="campo plataforma"><strong>Plataforma:</strong> {jogo.plataforma || "-"}</p>
+                    <p className="campo inicio"><strong>Início:</strong> {jogo.inicio || "-"}</p>
+                    <p className="campo termino"><strong>Término:</strong> {jogo.termino || "-"}</p>
+                    <p className="campo situacao"><strong>Situação:</strong> {jogo.situacao || "-"}</p>
+                    <p className="campo horas"><strong>Horas:</strong> {extrairHoras(jogo)}h</p>
+                    <p className="campo dificuldade"><strong>Dificuldade:</strong> {jogo.dificuldade || "-"}</p>
+                    <p className="campo replay"><strong>Replay:</strong> {jogo.replay || "-"}</p>
+                    <p className="campo nota"><strong>Nota:</strong> {jogo.nota || "-"}</p>
                   </>
                 )}
               </div>
