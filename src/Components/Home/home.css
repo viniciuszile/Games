@@ -138,6 +138,7 @@ body {
   backface-visibility: hidden;
   border-radius: inherit;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .card-front img {
@@ -214,24 +215,76 @@ body {
 /* ============================= */
 /* 📱 MOBILE (600px)             */
 /* ============================= */
+/* ============================= */
+/* 📱 MOBILE (até 600px)         */
+/* ============================= */
 @media (max-width: 600px) {
+
+  /* ----------------------------- */
+  /* 🗂️ GRID / ESPAÇAMENTO        */
+  /* ----------------------------- */
   .container_card {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 🔥 3 por linha */
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     padding: 15px;
     padding-top: 90px;
     margin-top: 30px;
+
+    /* espaço extra pro botão flutuante */
+    padding-bottom: 140px;
   }
 
+  /* ----------------------------- */
+  /* 🃏 CARD                       */
+  /* ----------------------------- */
   .card {
     width: 100%;
     height: auto;
-    aspect-ratio: 2 / 3; /* mantém proporção */
+    aspect-ratio: 2 / 3;
   }
 
+  /* ----------------------------- */
+  /* 🔙 BACK DO CARD               */
+  /* ----------------------------- */
   .card-back {
     font-size: 0.7rem;
     padding: 8px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+
+  .card-back p {
+    margin: 2px 0;
+  }
+
+  /* ----------------------------- */
+  /* 🚫 ESCONDE TODOS OS CAMPOS    */
+  /* ----------------------------- */
+  .card-back .campo {
+    display: none;
+  }
+
+  /* ----------------------------- */
+  /* 🎮 NORMAL / CONCLUÍDO / ANDAMENTO */
+  /* ----------------------------- */
+  .card:not(.dropado) .plataforma,
+  .card:not(.dropado) .situacao,
+  .card:not(.dropado) .nota {
+    display: block;
+  }
+
+  /* ----------------------------- */
+  /* ❌ DROPADO                    */
+  /* ----------------------------- */
+  .card.dropado .plataforma,
+  .card.dropado .motivo,
+  .card.dropado .plano {
+    display: block;
   }
 }

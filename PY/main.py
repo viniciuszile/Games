@@ -10,7 +10,7 @@ import requests
 # ---------------------------
 # Configurações GitHub
 # ---------------------------
-GITHUB_TOKEN = "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"
+GITHUB_TOKEN = ""
 
 REPO_JSON = "viniciuszile/Games"
 BRANCH_JSON = "main"
