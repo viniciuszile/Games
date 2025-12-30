@@ -388,12 +388,11 @@
     "plataforma": "SNES",
     "inicio": "27/06/2025",
     "termino": "02/07/2025",
-    "situacao": "Concluído",
-    "Horas De Jogo": "★★★★★",
+    "situacao": "Concluido",
+    "Horas De Jogo": "10",
     "dificuldade": "C",
-    "nota": "★★★★★",
-    "Rank_25": "999",
-    "replay": "sim"
+    "replay": "sim",
+    "nota": "★★★★★"
   },
   {
     "nome": "Joe & Mac 2",
