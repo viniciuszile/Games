@@ -20,7 +20,7 @@ function Home_2026() {
   /* ========================= */
   useEffect(() => {
     fetch(
-      "../../Data/jogos_2026.json"
+      "https://raw.githubusercontent.com/viniciuszile/Games/refs/heads/Jogos-2026-v1/public/Data/jogos_2026.json"
     )
       .then((res) => {
         if (!res.ok) throw new Error("Erro ao buscar os dados");
@@ -248,3 +248,4 @@ function Home_2026() {
 }
 
 export default Home_2026;
+
