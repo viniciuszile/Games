@@ -1,5 +1,5 @@
 [
-     {
+  {
     "nome": "Assassin's Creed Valhalla",
     "imagem": "https://raw.githubusercontent.com/viniciuszile//Games-Fotos-2025/refs/heads/main/valhala.png",
     "plataforma": "Steam - PC",
@@ -10,5 +10,17 @@
     "dificuldade": "-",
     "replay": "Não",
     "nota": "-"
+  },
+  {
+    "nome": "Resident evil ",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/resident.png",
+    "plataforma": "Steam  - PC",
+    "inicio": "02/01/2025",
+    "termino": "-",
+    "situacao": "-",
+    "Horas De Jogo": "-",
+    "dificuldade": "-",
+    "replay": "-",
+    "nota": "☆☆☆☆☆"
   }
 ]
