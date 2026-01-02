@@ -9,7 +9,7 @@ export default function Top3Jogos() {
 
   const jogos = [
     {
-      nome: "Dark Souls: Remastered",
+      nome: "Hollow Knight: Silksong",
       imagem:
         "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/silk.png",
     },
@@ -47,7 +47,6 @@ export default function Top3Jogos() {
           <div className="top3-card">
             <img src={jogos[1].imagem} alt={jogos[1].nome} />
           </div>
-          <p className="nome">{jogos[1].nome}</p>
         </div>
 
         {/* TOP 1 */}
@@ -56,7 +55,6 @@ export default function Top3Jogos() {
           <div className="top3-card destaque">
             <img src={jogos[0].imagem} alt={jogos[0].nome} />
           </div>
-          <p className="nome">{jogos[0].nome}</p>
         </div>
 
         {/* TOP 3 */}
@@ -65,7 +63,6 @@ export default function Top3Jogos() {
           <div className="top3-card">
             <img src={jogos[2].imagem} alt={jogos[2].nome} />
           </div>
-          <p className="nome">{jogos[2].nome}</p>
         </div>
       </div>
 
