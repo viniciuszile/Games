@@ -721,15 +721,15 @@
     "nota": "★★★☆☆"
   },
   {
-    "nome": "Assassin's Creed Valhalla",
-    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/valhala.png",
+    "nome": "teste",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/resident.png",
     "plataforma": "Steam - PC",
-    "inicio": "18/12/2025",
+    "inicio": "02/01/2026",
     "termino": "-",
     "situacao": "-",
     "Horas De Jogo": "-",
     "dificuldade": "-",
-    "replay": "Não",
+    "replay": "-",
     "nota": "-"
   }
 ]
