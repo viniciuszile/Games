@@ -10,7 +10,7 @@ import requests
 # ---------------------------
 # Configurações GitHub
 # ---------------------------
-GITHUB_TOKEN = "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"
+GITHUB_TOKEN = ""
 
 REPO_JSON = "viniciuszile/Games"
 BRANCH_JSON = "main"
@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent
 JSON_PATH = BASE_DIR / "dados.json"
 
 # ---------------------------
-# Funções JSON local
+# JSON local
 # ---------------------------
 def load_jogos():
     if JSON_PATH.exists():
@@ -46,89 +46,74 @@ def save_jogos(jogos):
     )
 
 # ---------------------------
-# Funções GitHub
+# GitHub
 # ---------------------------
 def upload_json_to_github():
-    url_get = f"https://api.github.com/repos/{REPO_JSON}/contents/{JSON_PATH_GITHUB}"
+    url = f"https://api.github.com/repos/{REPO_JSON}/contents/{JSON_PATH_GITHUB}"
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
         "Accept": "application/vnd.github+json"
     }
 
-    r = requests.get(url_get, headers=headers)
-    sha = None
-    if r.status_code == 200:
-        sha = r.json()["sha"]
+    r = requests.get(url, headers=headers)
+    sha = r.json()["sha"] if r.status_code == 200 else None
 
     content = json.dumps(jogos, ensure_ascii=False, indent=2).encode("utf-8")
     content_b64 = base64.b64encode(content).decode()
 
     data = {
-        "message": "Atualizando JSON de jogos",
+        "message": "Atualizando jogos",
         "content": content_b64,
         "branch": BRANCH_JSON
     }
     if sha:
         data["sha"] = sha
 
-    r = requests.put(url_get, headers=headers, json=data)
-    if r.status_code in [200, 201]:
-        print("JSON enviado para o GitHub com sucesso!")
-    else:
-        print("Erro ao enviar JSON:", r.text)
+    requests.put(url, headers=headers, json=data)
 
 def upload_image_to_github(local_path):
     filename = Path(local_path).name
-    url_get = f"https://api.github.com/repos/{REPO_IMG}/contents/{filename}"
+    url = f"https://api.github.com/repos/{REPO_IMG}/contents/{filename}"
     headers = {"Authorization": f"token {GITHUB_TOKEN}"}
 
-    # Verifica se o arquivo já existe
-    r = requests.get(url_get, headers=headers)
+    r = requests.get(url, headers=headers)
     if r.status_code == 200:
-        # Já existe, usar o mesmo nome
-        print(f"Imagem {filename} já existe, usando a existente.")
-    else:
-        # Não existe, faz upload
-        with open(local_path, "rb") as f:
-            content_b64 = base64.b64encode(f.read()).decode()
-        data = {
-            "message": f"Upload da imagem {filename}",
-            "content": content_b64,
-            "branch": BRANCH_IMG
-        }
-        r = requests.put(url_get, headers=headers, json=data)
-        if r.status_code in [200, 201]:
-            print(f"Imagem {filename} enviada com sucesso!")
-        else:
-            print("Erro ao enviar imagem:", r.text)
+        return
 
-# ---------------------------
-# Abrir end.py ao fechar
-# ---------------------------
-def iniciar_end():
-    end_path = BASE_DIR / "end.py"
-    if end_path.exists():
-        subprocess.Popen(
-            f'start cmd /k "cd {BASE_DIR} && python end.py"',
-            shell=True
-        )
-    else:
-        print("end.py não encontrado!")
+    with open(local_path, "rb") as f:
+        content_b64 = base64.b64encode(f.read()).decode()
 
-def on_close():
-    root.destroy()
-    iniciar_end()
-    sys.exit()
+    data = {
+        "message": f"Upload {filename}",
+        "content": content_b64,
+        "branch": BRANCH_IMG
+    }
+    requests.put(url, headers=headers, json=data)
 
 # ---------------------------
 # Tkinter
 # ---------------------------
 root = tk.Tk()
 root.title("CRUD Jogos")
-root.geometry("950x550")
-root.protocol("WM_DELETE_WINDOW", on_close)
+root.state("zoomed")
 
 jogos = load_jogos()
+
+# ---------------------------
+# Estrelas ⭐
+# ---------------------------
+nota_var = tk.StringVar(value="☆☆☆☆☆")
+rating_value = tk.IntVar(value=0)
+star_labels = []
+
+def set_rating(value):
+    rating_value.set(value)
+    nota_var.set("★" * value + "☆" * (5 - value))
+    update_stars()
+
+def update_stars():
+    for i, lbl in enumerate(star_labels, start=1):
+        lbl.config(text="★" if i <= rating_value.get() else "☆")
 
 # ---------------------------
 # Atualizar tabela
@@ -150,23 +135,6 @@ def refresh_tree():
             jogo.get("Motivo", ""),
             jogo.get("Plano de ação", "")
         ))
-
-# ---------------------------
-# Selecionar imagem
-# ---------------------------
-def select_image(entry):
-    path = filedialog.askopenfilename(
-        title="Selecionar imagem",
-        filetypes=[("Imagens", "*.jpg *.png *.jpeg *.gif *.webp")]
-    )
-    if path:
-        filename = Path(path).name
-        # URL Raw
-        url = f"https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/{filename}"
-        entry.delete(0, tk.END)
-        entry.insert(0, url)
-        # Faz upload apenas se não existir
-        upload_image_to_github(path)
 
 # ---------------------------
 # Salvar / Editar
@@ -197,10 +165,8 @@ def save_entry():
             "nota": nota_var.get()
         }
 
-    selected = tree.selection()
-    if selected:
-        idx = int(selected[0])
-        jogos[idx] = data
+    if tree.selection():
+        jogos[int(tree.selection()[0])] = data
     else:
         jogos.append(data)
 
@@ -213,13 +179,10 @@ def save_entry():
 # Deletar
 # ---------------------------
 def delete_entry():
-    selected = tree.selection()
-    if not selected:
-        messagebox.showwarning("Aviso", "Selecione um jogo para deletar")
+    if not tree.selection():
         return
-
-    idx = int(selected[0])
-    if messagebox.askyesno("Confirmação", f"Deletar {jogos[idx]['nome']}?"):
+    idx = int(tree.selection()[0])
+    if messagebox.askyesno("Confirmar", f"Deletar {jogos[idx]['nome']}?"):
         jogos.pop(idx)
         save_jogos(jogos)
         refresh_tree()
@@ -227,14 +190,12 @@ def delete_entry():
         upload_json_to_github()
 
 # ---------------------------
-# Preencher formulário
+# Selecionar tabela
 # ---------------------------
 def on_tree_select(event):
-    selected = tree.selection()
-    if not selected:
+    if not tree.selection():
         return
-    idx = int(selected[0])
-    jogo = jogos[idx]
+    jogo = jogos[int(tree.selection()[0])]
 
     nome_var.set(jogo.get("nome", ""))
     imagem_var.set(jogo.get("imagem", ""))
@@ -245,45 +206,52 @@ def on_tree_select(event):
     horas_var.set(jogo.get("Horas De Jogo", ""))
     dificuldade_var.set(jogo.get("dificuldade", ""))
     replay_var.set(jogo.get("replay", ""))
-    nota_var.set(jogo.get("nota", ""))
     motivo_var.set(jogo.get("Motivo", ""))
     plano_var.set(jogo.get("Plano de ação", ""))
-    if jogo.get("situacao") == "Dropado":
-        dropado_var.set(True)
-        toggle_dropado()
-    else:
-        dropado_var.set(False)
-        toggle_dropado()
+
+    nota = jogo.get("nota", "☆☆☆☆☆")
+    nota_var.set(nota)
+    rating_value.set(nota.count("★"))
+    update_stars()
+
+    is_dropado = jogo.get("situacao") == "Dropado"
+    dropado_var.set(is_dropado)
+    toggle_dropado()
+
+    # se NÃO for dropado, restaura a situação corretamente
+    if not is_dropado:
+        situacao_var.set(jogo.get("situacao", ""))
 
 # ---------------------------
-# Limpar formulário
+# Limpar
 # ---------------------------
 def clear_form():
-    for var in [nome_var, imagem_var, plataforma_var, inicio_var, termino_var,
-                situacao_var, horas_var, dificuldade_var, replay_var, nota_var,
-                motivo_var, plano_var]:
-        var.set("")
+    for v in [nome_var, imagem_var, plataforma_var, inicio_var,
+              termino_var, situacao_var, horas_var,
+              dificuldade_var, replay_var, motivo_var, plano_var]:
+        v.set("")
     dropado_var.set(False)
+    set_rating(0)
     toggle_dropado()
     tree.selection_remove(tree.selection())
 
 # ---------------------------
-# Toggle Dropado
+# Dropado
 # ---------------------------
 def toggle_dropado():
     if dropado_var.get():
-        for entry in old_entries.values():
-            entry.config(state="disabled")
-        for label, entry in dropado_entries.values():
-            label.grid()
-            entry.grid()
+        for e in old_entries.values():
+            e.config(state="disabled")
+        for lbl, ent in dropado_entries.values():
+            lbl.grid()
+            ent.grid()
         situacao_var.set("Dropado")
     else:
-        for entry in old_entries.values():
-            entry.config(state="normal")
-        for label, entry in dropado_entries.values():
-            label.grid_remove()
-            entry.grid_remove()
+        for e in old_entries.values():
+            e.config(state="normal")
+        for lbl, ent in dropado_entries.values():
+            lbl.grid_remove()
+            ent.grid_remove()
         situacao_var.set("")
 
 # ---------------------------
@@ -301,7 +269,6 @@ situacao_var = tk.StringVar()
 horas_var = tk.StringVar()
 dificuldade_var = tk.StringVar()
 replay_var = tk.StringVar()
-nota_var = tk.StringVar()
 motivo_var = tk.StringVar()
 plano_var = tk.StringVar()
 dropado_var = tk.BooleanVar()
@@ -315,47 +282,78 @@ fields = [
     ("Situação", situacao_var),
     ("Horas De Jogo", horas_var),
     ("Dificuldade", dificuldade_var),
-    ("Replay", replay_var),
-    ("Nota", nota_var)
+    ("Replay", replay_var)
 ]
 
 old_entries = {}
-for idx, (label_text, var) in enumerate(fields):
-    tk.Label(frame_form, text=label_text).grid(row=idx, column=0, sticky=tk.W, pady=2)
-    entry = tk.Entry(frame_form, textvariable=var, width=25)
-    entry.grid(row=idx, column=1, pady=2)
-    old_entries[label_text] = entry
-    if label_text == "Imagem":
-        tk.Button(frame_form, text="Selecionar", command=lambda e=entry: select_image(e)).grid(row=idx, column=2, padx=2)
+for i, (txt, var) in enumerate(fields):
+    tk.Label(frame_form, text=txt).grid(row=i, column=0, sticky="w")
+    ent = tk.Entry(frame_form, textvariable=var, width=25)
+    ent.grid(row=i, column=1)
+    old_entries[txt] = ent
 
-tk.Button(frame_form, text="Salvar", command=save_entry).grid(row=len(fields)+1, column=0, pady=10)
-tk.Button(frame_form, text="Deletar", command=delete_entry).grid(row=len(fields)+1, column=1, pady=10)
-tk.Button(frame_form, text="Limpar", command=clear_form).grid(row=len(fields)+1, column=2, pady=10)
+# Nota ⭐⭐⭐⭐⭐
+row_nota = len(fields)
+tk.Label(frame_form, text="Nota").grid(row=row_nota, column=0, sticky="w")
+stars_frame = tk.Frame(frame_form)
+stars_frame.grid(row=row_nota, column=1, sticky="w")
 
-tk.Checkbutton(frame_form, text="Dropado", variable=dropado_var, command=toggle_dropado).grid(row=len(fields), column=0, sticky=tk.W, pady=10)
+for i in range(1, 6):
+    lbl = tk.Label(stars_frame, text="☆", font=("Arial", 18))
+    lbl.pack(side=tk.LEFT)
+    lbl.bind("<Button-1>", lambda e, v=i: set_rating(v))
+    star_labels.append(lbl)
 
-dropado_entries = {}
-dropado_entries["Motivo"] = (tk.Label(frame_form, text="Motivo"), tk.Entry(frame_form, textvariable=motivo_var, width=25))
-dropado_entries["Plano de ação"] = (tk.Label(frame_form, text="Plano de ação"), tk.Entry(frame_form, textvariable=plano_var, width=25))
-for label, entry in dropado_entries.values():
-    label.grid_remove()
-    entry.grid_remove()
+tk.Checkbutton(frame_form, text="Dropado", variable=dropado_var,
+               command=toggle_dropado).grid(row=row_nota+1, column=0, sticky="w")
+
+dropado_entries = {
+    "Motivo": (tk.Label(frame_form, text="Motivo"),
+               tk.Entry(frame_form, textvariable=motivo_var, width=25)),
+    "Plano": (tk.Label(frame_form, text="Plano de ação"),
+              tk.Entry(frame_form, textvariable=plano_var, width=25))
+}
+
+for lbl, ent in dropado_entries.values():
+    lbl.grid_remove()
+    ent.grid_remove()
+
+tk.Button(frame_form, text="Salvar", command=save_entry).grid(row=row_nota+3, column=0)
+tk.Button(frame_form, text="Deletar", command=delete_entry).grid(row=row_nota+3, column=1)
+tk.Button(frame_form, text="Limpar", command=clear_form).grid(row=row_nota+3, column=2)
 
 # ---------------------------
-# Tabela
+# TABELA COM SCROLL
 # ---------------------------
-cols = ["Nome","Plataforma","Início","Término","Situação","Horas De Jogo",
-        "Dificuldade","Replay","Nota","Motivo","Plano de ação"]
+frame_table = tk.Frame(root)
+frame_table.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-tree = ttk.Treeview(root, columns=cols, show="headings", selectmode="browse")
+scroll_x = tk.Scrollbar(frame_table, orient="horizontal")
+scroll_y = tk.Scrollbar(frame_table, orient="vertical")
+
+cols = ["Nome","Plataforma","Início","Término","Situação",
+        "Horas De Jogo","Dificuldade","Replay","Nota","Motivo","Plano de ação"]
+
+tree = ttk.Treeview(
+    frame_table,
+    columns=cols,
+    show="headings",
+    xscrollcommand=scroll_x.set,
+    yscrollcommand=scroll_y.set
+)
+
+scroll_x.config(command=tree.xview)
+scroll_y.config(command=tree.yview)
+
+scroll_x.pack(side=tk.BOTTOM, fill=tk.X)
+scroll_y.pack(side=tk.RIGHT, fill=tk.Y)
+tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
 for c in cols:
     tree.heading(c, text=c)
-tree.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+    tree.column(c, width=160, anchor="w")
+
 tree.bind("<<TreeviewSelect>>", on_tree_select)
 
 refresh_tree()
-
-# ---------------------------
-# Iniciar janela
-# ---------------------------
 root.mainloop()

@@ -113,13 +113,48 @@
   box-shadow: 0 0 18px #8faaff;
 }
 
-/* Responsivo */
-@media (max-width: 768px) {
+/* ============================= */
+/* 📱 MOBILE – TOP 3 EM COLUNA   */
+/* ============================= */
+@media (max-width: 600px) {
+.top3-title{
+  margin-top: -75px;
+}
+  /* Container vira coluna */
   .top3-container {
-    gap: 24px;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
   }
 
-  .pos-1 {
+  /* Remove efeito de pódio */
+  .pos-1,
+  .pos-2,
+  .pos-3 {
     transform: none;
+  }
+
+  /* Ordem correta */
+  .pos-1 {
+    order: 1;
+  }
+
+  .pos-2 {
+    order: 2;
+  }
+
+  .pos-3 {
+    order: 3;
+  }
+
+  /* Ajuste de tamanho pro mobile */
+  .top3-card {
+    width: 220px;
+    height: 330px;
+  }
+
+  .nome {
+    max-width: 220px;
+    font-size: 0.95rem;
   }
 }
