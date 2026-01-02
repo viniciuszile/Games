@@ -31,12 +31,11 @@
     "plataforma": "PC - Steam(🏴‍☠️)",
     "inicio": "05/01/2025",
     "termino": "09/01/2025",
-    "situacao": "Concluído",
-    "Horas De Jogo": "★★★★★",
+    "situacao": "Concluido",
+    "Horas De Jogo": "55",
     "dificuldade": "C",
     "replay": "Não",
-    "nota": "★★☆☆☆",
-    "Rank_25": "30"
+    "nota": "★★★★★"
   },
   {
     "nome": "Zelda Breath Of The Wild",
@@ -56,13 +55,12 @@
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/detroid.jpg",
     "plataforma": "Steam (PC - Steam)",
     "inicio": "11/01/2025",
-    "termino": "★★★★★/02/2025",
-    "situacao": "Concluído",
+    "termino": "10/02/2025",
+    "situacao": "Concluido",
     "Horas De Jogo": "15",
     "dificuldade": "C",
     "replay": "Não",
-    "nota": "★★★☆☆",
-    "Rank_25": "23"
+    "nota": "★★★☆☆"
   },
   {
     "nome": "Spider-Man 2",
@@ -354,10 +352,9 @@
     "plataforma": "Switch",
     "inicio": "11/06/2025",
     "situacao": "Dropado",
-    "Horas De Jogo": "★★★★★",
+    "Horas De Jogo": "-",
     "Motivo": "Vendi o console e perdi meu save",
-    "Plano de ação": "Não pretendo voltar a jogar com emulador",
-    "Rank_25": "999"
+    "Plano de ação": "Não pretendo voltar a jogar com emulador"
   },
   {
     "nome": "Mario Kart 8",
@@ -391,12 +388,11 @@
     "plataforma": "SNES",
     "inicio": "27/06/2025",
     "termino": "02/07/2025",
-    "situacao": "Concluído",
-    "Horas De Jogo": "★★★★★",
+    "situacao": "Concluido",
+    "Horas De Jogo": "10",
     "dificuldade": "C",
-    "nota": "★★★★★",
-    "Rank_25": "999",
-    "replay": "sim"
+    "replay": "sim",
+    "nota": "★★★★★"
   },
   {
     "nome": "Joe & Mac 2",
@@ -481,13 +477,12 @@
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/ninja.png",
     "plataforma": "PC - Gamepass",
     "inicio": "25/07/2025",
-    "termino": "★★★★★/08/2025",
-    "situacao": "Concluído",
+    "termino": "01/08/2025",
+    "situacao": "Concluido",
     "Horas De Jogo": "9",
     "dificuldade": "B",
     "replay": "Não",
-    "nota": "★★☆☆☆",
-    "Rank_25": "33"
+    "nota": "★★☆☆☆"
   },
   {
     "nome": "Dead Cells",
@@ -557,26 +552,24 @@
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/hotline.png",
     "plataforma": "PC - Steam",
     "inicio": "20/09/2025",
-    "termino": "07/★★★★★/2025",
+    "termino": "07/10/2025",
     "situacao": "Concluído",
     "Horas De Jogo": "5",
     "dificuldade": "A",
     "replay": "Não",
-    "nota": "★★☆☆☆",
-    "Rank_25": "32"
+    "nota": "★★☆☆☆"
   },
   {
-    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/hades.png",
     "nome": "Hades 2",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/hades.png",
     "plataforma": "PC - Steam",
     "inicio": "25/09/2025",
-    "termino": "15/★★★★★/2025",
+    "termino": "22/10/2025",
     "situacao": "Concluido",
     "Horas De Jogo": "55",
     "dificuldade": "B",
     "replay": "Não",
-    "nota": "★★★★☆",
-    "Rank_25": "7"
+    "nota": "★★★★☆"
   },
   {
     "nome": "Death Stranding",
@@ -605,7 +598,7 @@
     "plataforma": "PC - Steam",
     "inicio": "29/10/2025",
     "termino": "11/11/2025",
-    "situacao": "",
+    "situacao": "Concluido",
     "Horas De Jogo": "15",
     "dificuldade": "A",
     "replay": "Sim",
@@ -720,23 +713,23 @@
     "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/dave.png",
     "plataforma": "Steam - PC",
     "inicio": "29/11/2025",
-    "termino": "-",
-    "situacao": "-",
-    "Horas De Jogo": "-",
-    "dificuldade": "-",
+    "termino": "31/12/2025",
+    "situacao": "Concluido",
+    "Horas De Jogo": "40",
+    "dificuldade": "C",
     "replay": "Não",
-    "nota": "-"
+    "nota": "★★★☆☆"
   },
   {
-    "nome": "Assassin's Creed Valhalla\n",
-    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/valhala.png",
-    "plataforma": "PC - Steam",
-    "inicio": "18/12/2025",
+    "nome": "teste",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/resident.png",
+    "plataforma": "Steam - PC",
+    "inicio": "02/01/2026",
     "termino": "-",
     "situacao": "-",
     "Horas De Jogo": "-",
     "dificuldade": "-",
-    "replay": "Não",
+    "replay": "-",
     "nota": "-"
   }
 ]

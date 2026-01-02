@@ -13,10 +13,10 @@ import requests
 GITHUB_TOKEN = ""
 
 REPO_JSON = "viniciuszile/Games"
-BRANCH_JSON = "main"
+BRANCH_JSON = "Jogos-2026-v1"
 JSON_PATH_GITHUB = "public/Data/jogos.json"
 
-REPO_IMG = "viniciuszile/new---fotos"
+REPO_IMG = "viniciuszile/Games-Fotos-2025"
 BRANCH_IMG = "main"
 
 # ---------------------------
@@ -359,4 +359,3 @@ refresh_tree()
 # Iniciar janela
 # ---------------------------
 root.mainloop()
-
