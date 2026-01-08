@@ -46,5 +46,17 @@
     "dificuldade": "C",
     "replay": "Sim",
     "nota": "★★★★★"
+  },
+  {
+    "nome": "Inside",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/inside.png",
+    "plataforma": "Steam - PC",
+    "inicio": "06/01/2026",
+    "termino": "08/01/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "5",
+    "dificuldade": "C",
+    "replay": "Não",
+    "nota": "★★★★☆"
   }
 ]
