@@ -31,11 +31,13 @@
     "plataforma": "Steam - PC",
     "inicio": "02/01/2026",
     "termino": "-",
-    "situacao": "-",
+    "situacao": "pausado",
     "Horas De Jogo": "-",
     "dificuldade": "-",
     "replay": "Nao",
-    "nota": "☆☆☆☆☆"
+    "nota": "☆☆☆☆☆",
+    "Motivo": "Não consegui pegar gosto",
+    "Plano de ação": "pretendo voltar"
   },
   {
     "nome": "Resident evil 2 remake",
