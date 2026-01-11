@@ -62,5 +62,17 @@
     "dificuldade": "C",
     "replay": "Não",
     "nota": "★★★★☆"
+  },
+  {
+    "nome": "Days gone",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/days.png",
+    "plataforma": "Steam - PC",
+    "inicio": "11/01/2025",
+    "termino": "-",
+    "situacao": "-",
+    "Horas De Jogo": "-",
+    "dificuldade": "-",
+    "replay": "Sim",
+    "nota": "☆☆☆☆☆"
   }
 ]
