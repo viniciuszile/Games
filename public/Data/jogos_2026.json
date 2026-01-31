@@ -100,5 +100,17 @@
     "dificuldade": "-",
     "replay": "Sim",
     "nota": "☆☆☆☆☆"
+  },
+  {
+    "nome": "Resident evil 3 remake",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/re3.png",
+    "plataforma": "Stema - PC",
+    "inicio": "30/01/2026",
+    "termino": "30/01/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "3",
+    "dificuldade": "C",
+    "replay": "Sim",
+    "nota": "★★☆☆☆"
   }
 ]
