@@ -112,5 +112,17 @@
     "dificuldade": "C",
     "replay": "Sim",
     "nota": "★★☆☆☆"
+  },
+  {
+    "nome": "Resident Evil 4 remake",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/re4.png",
+    "plataforma": "Steam - PC",
+    "inicio": "02/02/2026",
+    "termino": "04/02/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "7",
+    "dificuldade": "C",
+    "replay": "Sim",
+    "nota": "★★★★★"
   }
 ]
