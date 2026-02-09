@@ -124,5 +124,17 @@
     "dificuldade": "C",
     "replay": "Sim",
     "nota": "★★★★★"
+  },
+  {
+    "nome": "Resident  evil 5",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/re5.png",
+    "plataforma": "Steam - PC",
+    "inicio": "04/02/2026",
+    "termino": "08/02/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "13",
+    "dificuldade": "C",
+    "replay": "Não",
+    "nota": "★★★☆☆"
   }
 ]
