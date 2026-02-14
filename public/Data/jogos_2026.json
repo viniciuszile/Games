@@ -136,5 +136,17 @@
     "dificuldade": "C",
     "replay": "Não",
     "nota": "★★★☆☆"
+  },
+  {
+    "nome": "Resident Evil 6\n",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/re6.png",
+    "plataforma": "Steam - PC",
+    "inicio": "09/02/2026",
+    "termino": "14/02/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "14",
+    "dificuldade": "C",
+    "replay": "Sim",
+    "nota": "★★☆☆☆"
   }
 ]
