@@ -169,9 +169,9 @@ body {
   box-shadow: 0 0 12px #00ff88;
 }
 
-.card.dropado {
-  border: 2px solid #ff5555;
-  box-shadow: 0 0 12px #ff5555;
+.card.pausado {
+  border: 2px solid #5574ff;
+  box-shadow: 0 0 12px #5574ff;
 }
 
 .card.em-andamento {
@@ -273,18 +273,18 @@ body {
   /* ----------------------------- */
   /* 🎮 NORMAL / CONCLUÍDO / ANDAMENTO */
   /* ----------------------------- */
-  .card:not(.dropado) .plataforma,
-  .card:not(.dropado) .situacao,
-  .card:not(.dropado) .nota {
+  .card:not(.pausado) .plataforma,
+  .card:not(.pausado) .situacao,
+  .card:not(.pausado) .nota {
     display: block;
   }
 
   /* ----------------------------- */
-  /* ❌ DROPADO                    */
+  /* ❌ pausado                    */
   /* ----------------------------- */
-  .card.dropado .plataforma,
-  .card.dropado .motivo,
-  .card.dropado .plano {
+  .card.pausado .plataforma,
+  .card.pausado .motivo,
+  .card.pausado .plano {
     display: block;
   }
 }

@@ -20,7 +20,7 @@ function Home_2025() {
   /* ========================= */
   useEffect(() => {
     fetch(
-      "https://raw.githubusercontent.com/viniciuszile/Games/refs/heads/main/public/Data/jogos_2025.json"
+      "/data/jogos_2025.json"
     )
       .then((res) => {
         if (!res.ok) throw new Error("Erro ao buscar os dados");
@@ -59,9 +59,9 @@ function Home_2025() {
     return n === "concluido";
   }
 
-  function isDropado(situacao) {
+  function ispausado(situacao) {
     const n = removerAcentos(situacao || "").toLowerCase().trim();
-    return n === "dropado";
+    return n === "pausado";
   }
 
   function extrairHoras(jogo) {
@@ -106,9 +106,9 @@ function Home_2025() {
     }
 
     if (filtro === "concluidos") return isConcluido(jogo.situacao);
-    if (filtro === "dropado") return isDropado(jogo.situacao);
+    if (filtro === "pausado") return ispausado(jogo.situacao);
     if (filtro === "em-andamento")
-      return !isConcluido(jogo.situacao) && !isDropado(jogo.situacao);
+      return !isConcluido(jogo.situacao) && !ispausado(jogo.situacao);
 
     return true;
   });
@@ -148,8 +148,8 @@ function Home_2025() {
   /* 🧮 Contadores             */
   /* ========================= */
   const totalConcluidos = jogos.filter((j) => isConcluido(j.situacao)).length;
-  const totalDropados = jogos.filter((j) => isDropado(j.situacao)).length;
-  const totalEmAndamento = jogos.length - totalConcluidos - totalDropados;
+  const totalpausados = jogos.filter((j) => ispausado(j.situacao)).length;
+  const totalEmAndamento = jogos.length - totalConcluidos - totalpausados;
 
   /* ========================= */
   /* 🖥️ Render                 */
@@ -159,7 +159,7 @@ function Home_2025() {
       <header className="status-header">
         <div>🎯 <strong>Zerados:</strong> {totalConcluidos}</div>
         <div>🔥 <strong>Em andamento:</strong> {totalEmAndamento}</div>
-        <div>❌ <strong>Dropado:</strong> {totalDropados}</div>
+        <div>⏸️ <strong>pausado:</strong> {totalpausados}</div>
         <div>📦 <strong>Total:</strong> {jogos.length}</div>
       </header>
 
@@ -184,7 +184,7 @@ function Home_2025() {
               <button onClick={() => setFiltro("todos")}>📋 Todos</button>
               <button onClick={() => setFiltro("concluidos")}>✅ Concluídos</button>
               <button onClick={() => setFiltro("em-andamento")}>⏳ Em andamento</button>
-              <button onClick={() => setFiltro("dropado")}>🗑️ Dropado</button>
+              <button onClick={() => setFiltro("pausado")}>🗑️ pausado</button>
             </div>
 
             <h4>↕️ Ordenar por</h4>
@@ -201,11 +201,11 @@ function Home_2025() {
 
       <div className="container_card">
         {jogosFiltrados.map((jogo, index) => {
-          const dropado = isDropado(jogo.situacao);
+          const pausado = ispausado(jogo.situacao);
           const classeEstado = isConcluido(jogo.situacao)
             ? "concluido"
-            : dropado
-            ? "dropado"
+            : pausado
+            ? "pausado"
             : "em-andamento";
 
           return (
@@ -221,7 +221,7 @@ function Home_2025() {
               </div>
 
               <div className="card-back">
-                {dropado ? (
+                {pausado ? (
                   <>
                     <p className="campo plataforma"><strong>Plataforma:</strong> {jogo.plataforma || "-"}</p>
                     <p className="campo inicio"><strong>Início:</strong> {jogo.inicio || "-"}</p>
@@ -250,4 +250,3 @@ function Home_2025() {
 }
 
 export default Home_2025;
-
