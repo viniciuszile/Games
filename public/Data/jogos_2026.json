@@ -126,7 +126,7 @@
     "nota": "★★★★★"
   },
   {
-    "nome": "Resident  Evil 5",
+    "nome": "Resident Evil 5",
     "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/re5.png",
     "plataforma": "Steam - PC",
     "inicio": "04/02/2026",
@@ -160,5 +160,17 @@
     "dificuldade": "C",
     "replay": "Sim",
     "nota": "★★★☆☆"
+  },
+  {
+    "nome": "",
+    "imagem": "",
+    "plataforma": "",
+    "inicio": "",
+    "termino": "",
+    "situacao": "",
+    "Horas De Jogo": "",
+    "dificuldade": "",
+    "replay": "",
+    "nota": "☆☆☆☆☆"
   }
 ]
