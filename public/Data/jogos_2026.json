@@ -160,5 +160,17 @@
     "dificuldade": "C",
     "replay": "Sim",
     "nota": "★★★☆☆"
+  },
+  {
+    "nome": "Resident Evil 8 \n",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/re8.png",
+    "plataforma": "Steam - PC",
+    "inicio": "17/02/2026",
+    "termino": "20/02/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "4",
+    "dificuldade": "C",
+    "replay": "Sim",
+    "nota": "★★★★☆"
   }
 ]
