@@ -184,5 +184,17 @@
     "dificuldade": "-",
     "replay": "Sim",
     "nota": "☆☆☆☆☆"
+  },
+  {
+    "nome": "Resident Evil Requiem\n",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/re9.png",
+    "plataforma": "Steam - PC",
+    "inicio": "27/02/2026",
+    "termino": "06/03/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "35",
+    "dificuldade": "C",
+    "replay": "Não",
+    "nota": "★★★★★"
   }
 ]
