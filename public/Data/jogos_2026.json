@@ -196,5 +196,17 @@
     "dificuldade": "C",
     "replay": "Não",
     "nota": "★★★★★"
+  },
+  {
+    "nome": "The Witcher 3: Wild Hunt",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/tw3.png",
+    "plataforma": "Steam - PC",
+    "inicio": "08/03/2026",
+    "termino": "-",
+    "situacao": "-",
+    "Horas De Jogo": "-",
+    "dificuldade": "-",
+    "replay": "Sim",
+    "nota": "☆☆☆☆☆"
   }
 ]
