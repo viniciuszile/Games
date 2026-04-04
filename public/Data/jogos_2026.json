@@ -222,5 +222,17 @@
     "dificuldade": "C",
     "replay": "Não",
     "nota": "★★★★★"
+  },
+  {
+    "nome": "minideca",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/re8.png",
+    "plataforma": "-",
+    "inicio": "-",
+    "termino": "-",
+    "situacao": "-",
+    "Horas De Jogo": "-",
+    "dificuldade": "-",
+    "replay": "-",
+    "nota": "☆☆☆☆☆"
   }
 ]
