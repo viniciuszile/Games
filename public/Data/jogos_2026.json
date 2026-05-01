@@ -246,5 +246,17 @@
     "dificuldade": "-",
     "replay": "Sim",
     "nota": "☆☆☆☆☆"
+  },
+  {
+    "nome": "Ball x Pit",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/ball.png",
+    "plataforma": "Steam - PC",
+    "inicio": "30/04/2026",
+    "termino": "-",
+    "situacao": "-",
+    "Horas De Jogo": "-",
+    "dificuldade": "-",
+    "replay": "Não",
+    "nota": "☆☆☆☆☆"
   }
 ]
