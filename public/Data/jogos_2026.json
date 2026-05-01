@@ -258,5 +258,17 @@
     "dificuldade": "-",
     "replay": "Não",
     "nota": "☆☆☆☆☆"
+  },
+  {
+    "nome": "Uncharted 4",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/uncharted4.png",
+    "plataforma": "Steam - PC",
+    "inicio": "01/05/2026",
+    "termino": "-",
+    "situacao": "-",
+    "Horas De Jogo": "-",
+    "dificuldade": "-",
+    "replay": "Sim",
+    "nota": "☆☆☆☆☆"
   }
 ]
