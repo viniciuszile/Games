@@ -241,13 +241,11 @@
     "plataforma": "Steam - PC",
     "inicio": "28/04/2024",
     "termino": "-",
-    "situacao": "pausado",
+    "situacao": "",
     "Horas De Jogo": "-",
     "dificuldade": "-",
     "replay": "Sim",
-    "nota": "☆☆☆☆☆",
-    "Motivo": "teste",
-    "Plano de ação": "teste"
+    "nota": "☆☆☆☆☆"
   },
   {
     "nome": "Ball x Pit",
