@@ -251,11 +251,13 @@
     "plataforma": "Steam - PC",
     "inicio": "15/05/2026",
     "termino": "-",
-    "situacao": "-",
+    "situacao": "pausado",
     "Horas De Jogo": "-",
     "dificuldade": "-",
     "replay": "Sim",
-    "nota": "☆☆☆☆☆"
+    "nota": "☆☆☆☆☆",
+    "Motivo": "Comecei a jogar outras coisas",
+    "Plano de ação": "Pretendo voltar "
   },
   {
     "nome": "Diablo IV\n",
