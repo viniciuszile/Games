@@ -263,11 +263,13 @@
     "plataforma": "Gamepass - PC",
     "inicio": "24/05/2026",
     "termino": "-",
-    "situacao": "-",
+    "situacao": "pausado",
     "Horas De Jogo": "-",
     "dificuldade": "-",
     "replay": "Não",
-    "nota": "☆☆☆☆☆"
+    "nota": "☆☆☆☆☆",
+    "Motivo": "Comecei a jogar outras coisas",
+    "Plano de ação": "não pretendo voltar a jogar"
   },
   {
     "nome": "Forza Horizon 6\n",
