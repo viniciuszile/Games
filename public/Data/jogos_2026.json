@@ -308,5 +308,17 @@
     "dificuldade": "-",
     "replay": "sim",
     "nota": "☆☆☆☆☆"
+  },
+  {
+    "nome": "Resident Evil 4 - Separate Ways",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/re4s.png",
+    "plataforma": "Steam - PC",
+    "inicio": "10/07/2026",
+    "termino": "12/07/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "4",
+    "dificuldade": "B",
+    "replay": "Sim",
+    "nota": "★★★★★"
   }
 ]
