@@ -320,5 +320,17 @@
     "dificuldade": "B",
     "replay": "Sim",
     "nota": "★★★★★"
+  },
+  {
+    "nome": "Cuphead",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/cup.png",
+    "plataforma": "Steam - PC",
+    "inicio": "12/07/2026",
+    "termino": "12/07/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "4",
+    "dificuldade": "A",
+    "replay": "Sim",
+    "nota": "★★★★★"
   }
 ]
