@@ -332,5 +332,17 @@
     "dificuldade": "A",
     "replay": "Sim",
     "nota": "★★★★★"
+  },
+  {
+    "nome": "Devil May Cry 3: Dante's Awakening\n",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/dmc.png",
+    "plataforma": "Steam - PC",
+    "inicio": "23/07/2026",
+    "termino": "02/08/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "12",
+    "dificuldade": "A",
+    "replay": "Não",
+    "nota": "★★★★★"
   }
 ]
