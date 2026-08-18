@@ -368,5 +368,17 @@
     "dificuldade": "A",
     "replay": "Sim",
     "nota": "★★★★☆"
+  },
+  {
+    "nome": "Blasphemous",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/blaphemous.png",
+    "plataforma": "Steam - PC",
+    "inicio": "02/08/2026",
+    "termino": "17/08/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "18",
+    "dificuldade": "A",
+    "replay": "Não",
+    "nota": "★★★★★"
   }
 ]
