@@ -356,5 +356,17 @@
     "dificuldade": "A",
     "replay": "Não",
     "nota": "★★★★★"
+  },
+  {
+    "nome": "Donkey Kong Country\n",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/dk1.png",
+    "plataforma": "R36",
+    "inicio": "01/08/2026",
+    "termino": "06/08/2026",
+    "situacao": "Concluido",
+    "Horas De Jogo": "2",
+    "dificuldade": "A",
+    "replay": "Sim",
+    "nota": "★★★★☆"
   }
 ]
