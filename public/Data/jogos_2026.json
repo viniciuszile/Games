@@ -291,11 +291,13 @@
     "plataforma": "Steam - PC",
     "inicio": "10/06/2026",
     "termino": "-",
-    "situacao": "-",
+    "situacao": "pausado",
     "Horas De Jogo": "-",
     "dificuldade": "-",
     "replay": "Não",
-    "nota": "☆☆☆☆☆"
+    "nota": "☆☆☆☆☆",
+    "Motivo": "Não consegui pegar gosto",
+    "Plano de ação": "Pretendo voltar"
   },
   {
     "nome": "Horizon Forbidden West\n",
