@@ -1,361 +1,909 @@
+ 
+# ==========================================
+# CRUD JOGOS 2026
+# ==========================================
+
 import json
 import tkinter as tk
-from tkinter import ttk, messagebox, filedialog
+from tkinter import ttk, filedialog, messagebox
 from pathlib import Path
-import subprocess
-import sys
 import base64
 import requests
+import os
+import time
 
-# ---------------------------
-# Configurações GitHub
-# ---------------------------
-GITHUB_TOKEN = ""
+from dotenv import load_dotenv
 
+# ==========================================
+# TERMINAL
+# ==========================================
+def linha():
+    print("─" * 70)
+
+def titulo(txt):
+    linha()
+    print(f"🎮 {txt}")
+    linha()
+
+def log(txt):
+    agora = time.strftime("%H:%M:%S")
+    print(f"[{agora}] ℹ️ {txt}")
+
+def ok(txt):
+    agora = time.strftime("%H:%M:%S")
+    print(f"[{agora}] ✅ {txt}")
+
+def warn(txt):
+    agora = time.strftime("%H:%M:%S")
+    print(f"[{agora}] ⚠️ {txt}")
+
+def err(txt):
+    agora = time.strftime("%H:%M:%S")
+    print(f"[{agora}] ❌ {txt}")
+
+titulo("CRUD Jogos 2026")
+
+# ==========================================
+# ENV
+# ==========================================
+load_dotenv()
+
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+
+if not GITHUB_TOKEN:
+    raise Exception("GITHUB_TOKEN não encontrado")
+
+ok("Token carregado")
+
+# ==========================================
+# CONFIG GITHUB
+# ==========================================
 REPO_JSON = "viniciuszile/Games"
-BRANCH_JSON = "Jogos-2026-v1"
-JSON_PATH_GITHUB = "public/Data/jogos.json"
+JSON_GITHUB_PATH = "public/Data/jogos_2026.json"
+BRANCH_JSON = "main"
 
 REPO_IMG = "viniciuszile/Games-Fotos-2025"
 BRANCH_IMG = "main"
 
-# ---------------------------
-# Diretório base
-# ---------------------------
+HEADERS = {
+    "Authorization": f"token {GITHUB_TOKEN}",
+    "Accept": "application/vnd.github+json"
+}
+
+# ==========================================
+# PATHS
+# ==========================================
 BASE_DIR = Path(__file__).resolve().parent
-JSON_PATH = BASE_DIR / "dados.json"
 
-# ---------------------------
-# Funções JSON local
-# ---------------------------
-def load_jogos():
-    if JSON_PATH.exists():
-        try:
-            text = JSON_PATH.read_text(encoding="utf-8").strip()
-            if not text:
+JSON_LOCAL = (
+    BASE_DIR.parent /
+    "public" /
+    "Data" /
+    "jogos_2026.json"
+)
+
+# ==========================================
+# BAIXAR JSON
+# ==========================================
+def baixar_json():
+
+    log("Sincronizando JSON...")
+
+    url = (
+        f"https://api.github.com/repos/"
+        f"{REPO_JSON}/contents/{JSON_GITHUB_PATH}"
+    )
+
+    response = requests.get(
+        url,
+        headers=HEADERS
+    )
+
+    if response.status_code != 200:
+
+        err(response.text)
+
+        if JSON_LOCAL.exists():
+
+            warn("Usando JSON local")
+
+            try:
+                return json.loads(
+                    JSON_LOCAL.read_text(
+                        encoding="utf-8"
+                    )
+                )
+
+            except:
                 return []
-            return json.loads(text)
-        except:
-            return []
-    return []
 
-def save_jogos(jogos):
-    JSON_PATH.write_text(
-        json.dumps(jogos, ensure_ascii=False, indent=2),
+        return []
+
+    data = response.json()
+
+    content = base64.b64decode(
+        data["content"]
+    ).decode("utf-8")
+
+    JSON_LOCAL.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    JSON_LOCAL.write_text(
+        content,
         encoding="utf-8"
     )
 
-# ---------------------------
-# Funções GitHub
-# ---------------------------
-def upload_json_to_github():
-    url_get = f"https://api.github.com/repos/{REPO_JSON}/contents/{JSON_PATH_GITHUB}"
-    headers = {
-        "Authorization": f"token {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json"
-    }
+    ok("JSON sincronizado")
 
-    r = requests.get(url_get, headers=headers)
+    return json.loads(content)
+
+# ==========================================
+# UPLOAD JSON
+# ==========================================
+def upload_json(jogos):
+
+    titulo("UPLOAD JSON")
+
+    url = (
+        f"https://api.github.com/repos/"
+        f"{REPO_JSON}/contents/{JSON_GITHUB_PATH}"
+    )
+
+    response = requests.get(
+        url,
+        headers=HEADERS
+    )
+
     sha = None
-    if r.status_code == 200:
-        sha = r.json()["sha"]
 
-    content = json.dumps(jogos, ensure_ascii=False, indent=2).encode("utf-8")
-    content_b64 = base64.b64encode(content).decode()
+    if response.status_code == 200:
+
+        sha = response.json()["sha"]
+
+        ok("SHA obtido")
+
+    content = base64.b64encode(
+        json.dumps(
+            jogos,
+            ensure_ascii=False,
+            indent=2
+        ).encode("utf-8")
+    ).decode()
 
     data = {
-        "message": "Atualizando JSON de jogos",
-        "content": content_b64,
+        "message": "Atualizando jogos 2026",
+        "content": content,
         "branch": BRANCH_JSON
     }
+
     if sha:
         data["sha"] = sha
 
-    r = requests.put(url_get, headers=headers, json=data)
-    if r.status_code in [200, 201]:
-        print("JSON enviado para o GitHub com sucesso!")
-    else:
-        print("Erro ao enviar JSON:", r.text)
-
-def upload_image_to_github(local_path):
-    filename = Path(local_path).name
-    url_get = f"https://api.github.com/repos/{REPO_IMG}/contents/{filename}"
-    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
-
-    # Verifica se o arquivo já existe
-    r = requests.get(url_get, headers=headers)
-    if r.status_code == 200:
-        # Já existe, usar o mesmo nome
-        print(f"Imagem {filename} já existe, usando a existente.")
-    else:
-        # Não existe, faz upload
-        with open(local_path, "rb") as f:
-            content_b64 = base64.b64encode(f.read()).decode()
-        data = {
-            "message": f"Upload da imagem {filename}",
-            "content": content_b64,
-            "branch": BRANCH_IMG
-        }
-        r = requests.put(url_get, headers=headers, json=data)
-        if r.status_code in [200, 201]:
-            print(f"Imagem {filename} enviada com sucesso!")
-        else:
-            print("Erro ao enviar imagem:", r.text)
-
-# ---------------------------
-# Abrir end.py ao fechar
-# ---------------------------
-def iniciar_end():
-    end_path = BASE_DIR / "end.py"
-    if end_path.exists():
-        subprocess.Popen(
-            f'start cmd /k "cd {BASE_DIR} && python end.py"',
-            shell=True
-        )
-    else:
-        print("end.py não encontrado!")
-
-def on_close():
-    root.destroy()
-    iniciar_end()
-    sys.exit()
-
-# ---------------------------
-# Tkinter
-# ---------------------------
-root = tk.Tk()
-root.title("CRUD Jogos")
-root.geometry("950x550")
-root.protocol("WM_DELETE_WINDOW", on_close)
-
-jogos = load_jogos()
-
-# ---------------------------
-# Atualizar tabela
-# ---------------------------
-def refresh_tree():
-    for i in tree.get_children():
-        tree.delete(i)
-    for idx, jogo in enumerate(jogos):
-        tree.insert("", "end", iid=idx, values=(
-            jogo.get("nome", ""),
-            jogo.get("plataforma", ""),
-            jogo.get("inicio", ""),
-            jogo.get("termino", ""),
-            jogo.get("situacao", ""),
-            jogo.get("Horas De Jogo", ""),
-            jogo.get("dificuldade", ""),
-            jogo.get("replay", ""),
-            jogo.get("nota", ""),
-            jogo.get("Motivo", ""),
-            jogo.get("Plano de ação", "")
-        ))
-
-# ---------------------------
-# Selecionar imagem
-# ---------------------------
-def select_image(entry):
-    path = filedialog.askopenfilename(
-        title="Selecionar imagem",
-        filetypes=[("Imagens", "*.jpg *.png *.jpeg *.gif *.webp")]
+    response = requests.put(
+        url,
+        headers=HEADERS,
+        json=data
     )
-    if path:
-        filename = Path(path).name
-        # URL Raw
-        url = f"https://raw.githubusercontent.com/viniciuszile/new---fotos/refs/heads/main/{filename}"
-        entry.delete(0, tk.END)
-        entry.insert(0, url)
-        # Faz upload apenas se não existir
-        upload_image_to_github(path)
 
-# ---------------------------
-# Salvar / Editar
-# ---------------------------
-def save_entry():
-    if dropado_var.get():
-        data = {
-            "nome": nome_var.get(),
-            "imagem": imagem_var.get(),
-            "plataforma": plataforma_var.get(),
-            "inicio": inicio_var.get(),
-            "situacao": "Dropado",
-            "Horas De Jogo": horas_var.get(),
-            "Motivo": motivo_var.get(),
-            "Plano de ação": plano_var.get()
-        }
-    else:
-        data = {
-            "nome": nome_var.get(),
-            "imagem": imagem_var.get(),
-            "plataforma": plataforma_var.get(),
-            "inicio": inicio_var.get(),
-            "termino": termino_var.get(),
-            "situacao": situacao_var.get(),
-            "Horas De Jogo": horas_var.get(),
-            "dificuldade": dificuldade_var.get(),
-            "replay": replay_var.get(),
-            "nota": nota_var.get()
-        }
+    if response.status_code in [200, 201]:
 
-    selected = tree.selection()
-    if selected:
-        idx = int(selected[0])
-        jogos[idx] = data
+        ok("JSON enviado GitHub")
+
     else:
+
+        err(response.text)
+
+        messagebox.showerror(
+            "GitHub",
+            response.text
+        )
+
+# ==========================================
+# UPLOAD IMAGEM
+# ==========================================
+def upload_imagem(path):
+
+    titulo("UPLOAD IMAGEM")
+
+    nome = (
+        Path(path)
+        .name
+        .lower()
+        .replace(" ", "-")
+    )
+
+    url_api = (
+        f"https://api.github.com/repos/"
+        f"{REPO_IMG}/contents/{nome}"
+    )
+
+    response = requests.get(
+        url_api,
+        headers=HEADERS
+    )
+
+    if response.status_code == 200:
+
+        warn("Imagem já existe")
+
+        return (
+            f"https://raw.githubusercontent.com/"
+            f"{REPO_IMG}/{BRANCH_IMG}/{nome}"
+        )
+
+    with open(path, "rb") as f:
+
+        content = base64.b64encode(
+            f.read()
+        ).decode()
+
+    data = {
+        "message": f"Upload {nome}",
+        "content": content,
+        "branch": BRANCH_IMG
+    }
+
+    response = requests.put(
+        url_api,
+        headers=HEADERS,
+        json=data
+    )
+
+    if response.status_code not in [200, 201]:
+
+        err(response.text)
+
+        return ""
+
+    ok("Imagem enviada")
+
+    return (
+        f"https://raw.githubusercontent.com/"
+        f"{REPO_IMG}/{BRANCH_IMG}/{nome}"
+    )
+
+# ==========================================
+# TKINTER
+# ==========================================
+root = tk.Tk()
+
+root.title("CRUD Jogos 2026")
+
+root.state("zoomed")
+
+style = ttk.Style()
+style.theme_use("clam")
+
+# ==========================================
+# DADOS
+# ==========================================
+jogos = baixar_json()
+
+indice_edicao = None
+
+# ==========================================
+# VARIÁVEIS
+# ==========================================
+nome = tk.StringVar()
+imagem = tk.StringVar()
+plataforma = tk.StringVar()
+inicio = tk.StringVar()
+termino = tk.StringVar()
+situacao = tk.StringVar()
+horas = tk.StringVar()
+dificuldade = tk.StringVar()
+replay = tk.StringVar()
+
+motivo = tk.StringVar()
+plano = tk.StringVar()
+
+pausado = tk.BooleanVar()
+
+nota = tk.StringVar(value="☆☆☆☆☆")
+
+stars = []
+
+# ==========================================
+# ESTRELAS
+# ==========================================
+def set_rating(v):
+
+    nota.set(
+        "★" * v + "☆" * (5 - v)
+    )
+
+    for i, s in enumerate(stars, 1):
+
+        s.config(
+            text="★" if i <= v else "☆"
+        )
+
+# ==========================================
+# IMAGEM
+# ==========================================
+def escolher_imagem():
+
+    path = filedialog.askopenfilename(
+        filetypes=[
+            ("Imagens", "*.png *.jpg *.jpeg *.webp")
+        ]
+    )
+
+    if not path:
+        return
+
+    imagem.set(
+        upload_imagem(path)
+    )
+
+# ==========================================
+# TOGGLE PAUSADO
+# ==========================================
+def toggle_pausado():
+
+    if pausado.get():
+
+        situacao.set("pausado")
+
+        frame_pausado.grid(
+            row=11,
+            column=0,
+            columnspan=3,
+            sticky="w",
+            pady=(10, 10)
+        )
+
+    else:
+
+        if situacao.get() == "pausado":
+            situacao.set("")
+
+        frame_pausado.grid_remove()
+
+# ==========================================
+# SELECIONAR
+# ==========================================
+def ao_selecionar(event):
+
+    global indice_edicao
+
+    if not tree.selection():
+        return
+
+    indice_edicao = int(
+        tree.selection()[0]
+    )
+
+    j = jogos[indice_edicao]
+
+    nome.set(j.get("nome", ""))
+    imagem.set(j.get("imagem", ""))
+    plataforma.set(j.get("plataforma", ""))
+    inicio.set(j.get("inicio", ""))
+    termino.set(j.get("termino", ""))
+    situacao.set(j.get("situacao", ""))
+    horas.set(j.get("Horas De Jogo", ""))
+    dificuldade.set(j.get("dificuldade", ""))
+    replay.set(j.get("replay", ""))
+
+    set_rating(
+        j.get("nota", "☆☆☆☆☆").count("★")
+    )
+
+    if j.get("situacao") == "pausado":
+
+        pausado.set(True)
+
+        motivo.set(
+            j.get("Motivo", "")
+        )
+
+        plano.set(
+            j.get("Plano de ação", "")
+        )
+
+        frame_pausado.grid(
+            row=11,
+            column=0,
+            columnspan=3,
+            sticky="w",
+            pady=(10, 10)
+        )
+
+    else:
+
+        pausado.set(False)
+
+        motivo.set("")
+        plano.set("")
+
+        frame_pausado.grid_remove()
+
+# ==========================================
+# SALVAR
+# ==========================================
+def salvar():
+
+    global indice_edicao
+
+    data = {
+        "nome": nome.get(),
+        "imagem": imagem.get(),
+        "plataforma": plataforma.get(),
+        "inicio": inicio.get(),
+        "termino": termino.get(),
+        "situacao": (
+            "pausado"
+            if pausado.get()
+            else situacao.get()
+        ),
+        "Horas De Jogo": horas.get(),
+        "dificuldade": dificuldade.get(),
+        "replay": replay.get(),
+        "nota": nota.get()
+    }
+
+    if pausado.get():
+
+        data["Motivo"] = motivo.get()
+
+        data["Plano de ação"] = plano.get()
+
+    if indice_edicao is not None:
+
+        jogos[indice_edicao] = data
+
+        ok("Jogo atualizado")
+
+    else:
+
         jogos.append(data)
 
-    save_jogos(jogos)
-    refresh_tree()
-    clear_form()
-    upload_json_to_github()
+        ok("Novo jogo adicionado")
 
-# ---------------------------
-# Deletar
-# ---------------------------
-def delete_entry():
-    selected = tree.selection()
-    if not selected:
-        messagebox.showwarning("Aviso", "Selecione um jogo para deletar")
+    JSON_LOCAL.write_text(
+        json.dumps(
+            jogos,
+            ensure_ascii=False,
+            indent=2
+        ),
+        encoding="utf-8"
+    )
+
+    upload_json(jogos)
+
+    atualizar()
+
+    limpar()
+
+# ==========================================
+# DELETE
+# ==========================================
+def deletar():
+
+    global indice_edicao
+
+    if indice_edicao is None:
         return
 
-    idx = int(selected[0])
-    if messagebox.askyesno("Confirmação", f"Deletar {jogos[idx]['nome']}?"):
-        jogos.pop(idx)
-        save_jogos(jogos)
-        refresh_tree()
-        clear_form()
-        upload_json_to_github()
+    confirm = messagebox.askyesno(
+        "Confirmação",
+        f"Deletar {jogos[indice_edicao]['nome']}?"
+    )
 
-# ---------------------------
-# Preencher formulário
-# ---------------------------
-def on_tree_select(event):
-    selected = tree.selection()
-    if not selected:
+    if not confirm:
         return
-    idx = int(selected[0])
-    jogo = jogos[idx]
 
-    nome_var.set(jogo.get("nome", ""))
-    imagem_var.set(jogo.get("imagem", ""))
-    plataforma_var.set(jogo.get("plataforma", ""))
-    inicio_var.set(jogo.get("inicio", ""))
-    termino_var.set(jogo.get("termino", ""))
-    situacao_var.set(jogo.get("situacao", ""))
-    horas_var.set(jogo.get("Horas De Jogo", ""))
-    dificuldade_var.set(jogo.get("dificuldade", ""))
-    replay_var.set(jogo.get("replay", ""))
-    nota_var.set(jogo.get("nota", ""))
-    motivo_var.set(jogo.get("Motivo", ""))
-    plano_var.set(jogo.get("Plano de ação", ""))
-    if jogo.get("situacao") == "Dropado":
-        dropado_var.set(True)
-        toggle_dropado()
-    else:
-        dropado_var.set(False)
-        toggle_dropado()
+    jogos.pop(indice_edicao)
 
-# ---------------------------
-# Limpar formulário
-# ---------------------------
-def clear_form():
-    for var in [nome_var, imagem_var, plataforma_var, inicio_var, termino_var,
-                situacao_var, horas_var, dificuldade_var, replay_var, nota_var,
-                motivo_var, plano_var]:
-        var.set("")
-    dropado_var.set(False)
-    toggle_dropado()
-    tree.selection_remove(tree.selection())
+    JSON_LOCAL.write_text(
+        json.dumps(
+            jogos,
+            ensure_ascii=False,
+            indent=2
+        ),
+        encoding="utf-8"
+    )
 
-# ---------------------------
-# Toggle Dropado
-# ---------------------------
-def toggle_dropado():
-    if dropado_var.get():
-        for entry in old_entries.values():
-            entry.config(state="disabled")
-        for label, entry in dropado_entries.values():
-            label.grid()
-            entry.grid()
-        situacao_var.set("Dropado")
-    else:
-        for entry in old_entries.values():
-            entry.config(state="normal")
-        for label, entry in dropado_entries.values():
-            label.grid_remove()
-            entry.grid_remove()
-        situacao_var.set("")
+    upload_json(jogos)
 
-# ---------------------------
-# FORMULÁRIO
-# ---------------------------
-frame_form = tk.Frame(root)
-frame_form.pack(side=tk.LEFT, fill=tk.Y, padx=10, pady=10)
+    atualizar()
 
-nome_var = tk.StringVar()
-imagem_var = tk.StringVar()
-plataforma_var = tk.StringVar()
-inicio_var = tk.StringVar()
-termino_var = tk.StringVar()
-situacao_var = tk.StringVar()
-horas_var = tk.StringVar()
-dificuldade_var = tk.StringVar()
-replay_var = tk.StringVar()
-nota_var = tk.StringVar()
-motivo_var = tk.StringVar()
-plano_var = tk.StringVar()
-dropado_var = tk.BooleanVar()
+    limpar()
 
-fields = [
-    ("Nome", nome_var),
-    ("Imagem", imagem_var),
-    ("Plataforma", plataforma_var),
-    ("Início", inicio_var),
-    ("Término", termino_var),
-    ("Situação", situacao_var),
-    ("Horas De Jogo", horas_var),
-    ("Dificuldade", dificuldade_var),
-    ("Replay", replay_var),
-    ("Nota", nota_var)
-]
+# ==========================================
+# LIMPAR
+# ==========================================
+def limpar():
 
-old_entries = {}
-for idx, (label_text, var) in enumerate(fields):
-    tk.Label(frame_form, text=label_text).grid(row=idx, column=0, sticky=tk.W, pady=2)
-    entry = tk.Entry(frame_form, textvariable=var, width=25)
-    entry.grid(row=idx, column=1, pady=2)
-    old_entries[label_text] = entry
-    if label_text == "Imagem":
-        tk.Button(frame_form, text="Selecionar", command=lambda e=entry: select_image(e)).grid(row=idx, column=2, padx=2)
+    global indice_edicao
 
-tk.Button(frame_form, text="Salvar", command=save_entry).grid(row=len(fields)+1, column=0, pady=10)
-tk.Button(frame_form, text="Deletar", command=delete_entry).grid(row=len(fields)+1, column=1, pady=10)
-tk.Button(frame_form, text="Limpar", command=clear_form).grid(row=len(fields)+1, column=2, pady=10)
+    for v in [
+        nome,
+        imagem,
+        plataforma,
+        inicio,
+        termino,
+        situacao,
+        horas,
+        dificuldade,
+        replay,
+        motivo,
+        plano
+    ]:
+        v.set("")
 
-tk.Checkbutton(frame_form, text="Dropado", variable=dropado_var, command=toggle_dropado).grid(row=len(fields), column=0, sticky=tk.W, pady=10)
+    pausado.set(False)
 
-dropado_entries = {}
-dropado_entries["Motivo"] = (tk.Label(frame_form, text="Motivo"), tk.Entry(frame_form, textvariable=motivo_var, width=25))
-dropado_entries["Plano de ação"] = (tk.Label(frame_form, text="Plano de ação"), tk.Entry(frame_form, textvariable=plano_var, width=25))
-for label, entry in dropado_entries.values():
-    label.grid_remove()
-    entry.grid_remove()
+    set_rating(0)
 
-# ---------------------------
-# Tabela
-# ---------------------------
-cols = ["Nome","Plataforma","Início","Término","Situação","Horas De Jogo",
-        "Dificuldade","Replay","Nota","Motivo","Plano de ação"]
+    frame_pausado.grid_remove()
 
-tree = ttk.Treeview(root, columns=cols, show="headings", selectmode="browse")
+    indice_edicao = None
+
+    tree.selection_remove(
+        tree.selection()
+    )
+
+# ==========================================
+# LADO ESQUERDO
+# ==========================================
+side = tk.Frame(
+    root,
+    bg="#1e1e1e",
+    padx=15,
+    pady=15,
+    width=320
+)
+
+side.pack(
+    side=tk.LEFT,
+    fill=tk.Y
+)
+
+def campo(txt, var, row):
+
+    tk.Label(
+        side,
+        text=txt,
+        fg="white",
+        bg="#1e1e1e"
+    ).grid(
+        row=row,
+        column=0,
+        sticky="w",
+        pady=5
+    )
+
+    tk.Entry(
+        side,
+        textvariable=var,
+        width=30
+    ).grid(
+        row=row,
+        column=1,
+        pady=5
+    )
+
+campo("Nome", nome, 0)
+
+campo("Imagem", imagem, 1)
+
+tk.Button(
+    side,
+    text="Selecionar",
+    command=escolher_imagem
+).grid(
+    row=1,
+    column=2
+)
+
+campo("Plataforma", plataforma, 2)
+campo("Início", inicio, 3)
+campo("Término", termino, 4)
+campo("Situação", situacao, 5)
+campo("Horas", horas, 6)
+campo("Dificuldade", dificuldade, 7)
+campo("Replay", replay, 8)
+
+# ==========================================
+# ESTRELAS
+# ==========================================
+tk.Label(
+    side,
+    text="Nota",
+    fg="white",
+    bg="#1e1e1e"
+).grid(
+    row=9,
+    column=0,
+    sticky="w"
+)
+
+star_frame = tk.Frame(
+    side,
+    bg="#1e1e1e"
+)
+
+star_frame.grid(
+    row=9,
+    column=1,
+    sticky="w"
+)
+
+for i in range(1, 6):
+
+    lbl = tk.Label(
+        star_frame,
+        text="☆",
+        font=("Arial", 18),
+        fg="gold",
+        bg="#1e1e1e",
+        cursor="hand2"
+    )
+
+    lbl.pack(side=tk.LEFT)
+
+    lbl.bind(
+        "<Button-1>",
+        lambda e, v=i: set_rating(v)
+    )
+
+    stars.append(lbl)
+
+# ==========================================
+# PAUSADO
+# ==========================================
+tk.Checkbutton(
+    side,
+    text="Pausado",
+    variable=pausado,
+    command=toggle_pausado,
+    bg="#1e1e1e",
+    fg="white",
+    activebackground="#1e1e1e",
+    activeforeground="white",
+    selectcolor="#1e1e1e"
+).grid(
+    row=10,
+    column=0,
+    sticky="w",
+    pady=(10, 5)
+)
+
+frame_pausado = tk.Frame(
+    side,
+    bg="#1e1e1e"
+)
+
+# MOTIVO
+tk.Label(
+    frame_pausado,
+    text="Motivo",
+    fg="white",
+    bg="#1e1e1e",
+    width=12,
+    anchor="w"
+).grid(
+    row=0,
+    column=0,
+    padx=(0, 10),
+    pady=4,
+    sticky="w"
+)
+
+entry_motivo = tk.Entry(
+    frame_pausado,
+    textvariable=motivo,
+    width=38
+)
+
+entry_motivo.grid(
+    row=0,
+    column=1,
+    pady=4,
+    sticky="w"
+)
+
+# PLANO
+tk.Label(
+    frame_pausado,
+    text="Plano de ação",
+    fg="white",
+    bg="#1e1e1e",
+    width=12,
+    anchor="w"
+).grid(
+    row=1,
+    column=0,
+    padx=(0, 10),
+    pady=4,
+    sticky="w"
+)
+
+entry_plano = tk.Entry(
+    frame_pausado,
+    textvariable=plano,
+    width=38
+)
+
+entry_plano.grid(
+    row=1,
+    column=1,
+    pady=4,
+    sticky="w"
+)
+
+frame_pausado.grid_remove()
+
+# ==========================================
+# BOTÕES
+# ==========================================
+tk.Button(
+    side,
+    text="Salvar / Atualizar",
+    width=28,
+    command=salvar
+).grid(
+    row=20,
+    column=0,
+    columnspan=3,
+    pady=10
+)
+
+tk.Button(
+    side,
+    text="Deletar",
+    width=28,
+    command=deletar
+).grid(
+    row=21,
+    column=0,
+    columnspan=3
+)
+
+# ==========================================
+# TABELA
+# ==========================================
+frame_table = tk.Frame(root)
+
+frame_table.pack(
+    side=tk.RIGHT,
+    fill=tk.BOTH,
+    expand=True
+)
+
+cols = (
+    "Nome",
+    "Plataforma",
+    "Início",
+    "Término",
+    "Situação",
+    "Horas",
+    "Dificuldade",
+    "Replay",
+    "Nota",
+    "Motivo",
+    "Plano"
+)
+
+tree = ttk.Treeview(
+    frame_table,
+    columns=cols,
+    show="headings"
+)
+
+scroll_y = ttk.Scrollbar(
+    frame_table,
+    orient="vertical",
+    command=tree.yview
+)
+
+scroll_x = ttk.Scrollbar(
+    frame_table,
+    orient="horizontal",
+    command=tree.xview
+)
+
+tree.configure(
+    yscrollcommand=scroll_y.set,
+    xscrollcommand=scroll_x.set
+)
+
+tree.grid(
+    row=0,
+    column=0,
+    sticky="nsew"
+)
+
+scroll_y.grid(
+    row=0,
+    column=1,
+    sticky="ns"
+)
+
+scroll_x.grid(
+    row=1,
+    column=0,
+    sticky="ew"
+)
+
+frame_table.grid_rowconfigure(
+    0,
+    weight=1
+)
+
+frame_table.grid_columnconfigure(
+    0,
+    weight=1
+)
+
+larguras = {
+    "Nome": 260,
+    "Plataforma": 140,
+    "Início": 120,
+    "Término": 120,
+    "Situação": 120,
+    "Horas": 100,
+    "Dificuldade": 120,
+    "Replay": 100,
+    "Nota": 120,
+    "Motivo": 320,
+    "Plano": 420
+}
+
 for c in cols:
+
     tree.heading(c, text=c)
-tree.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
-tree.bind("<<TreeviewSelect>>", on_tree_select)
 
-refresh_tree()
+    tree.column(
+        c,
+        width=larguras.get(c, 150),
+        minwidth=100,
+        stretch=False
+    )
 
-# ---------------------------
-# Iniciar janela
-# ---------------------------
+tree.bind(
+    "<<TreeviewSelect>>",
+    ao_selecionar
+)
+
+# ==========================================
+# UPDATE TREE
+# ==========================================
+def atualizar():
+
+    tree.delete(*tree.get_children())
+
+    for i, j in enumerate(jogos):
+
+        tree.insert(
+            "",
+            "end",
+            iid=i,
+            values=(
+                j.get("nome"),
+                j.get("plataforma"),
+                j.get("inicio"),
+                j.get("termino"),
+                j.get("situacao"),
+                j.get("Horas De Jogo"),
+                j.get("dificuldade"),
+                j.get("replay"),
+                j.get("nota"),
+                j.get("Motivo"),
+                j.get("Plano de ação")
+            )
+        )
+
+    ok(f"{len(jogos)} jogos carregados")
+
+# ==========================================
+# START
+# ==========================================
+atualizar()
+
 root.mainloop()
+
