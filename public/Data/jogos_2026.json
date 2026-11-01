@@ -387,11 +387,13 @@
     "plataforma": "Steam - PC",
     "inicio": "29/08/2026",
     "termino": "-",
-    "situacao": "-",
+    "situacao": "pausado",
     "Horas De Jogo": "-",
     "dificuldade": "-",
     "replay": "Não",
-    "nota": "☆☆☆☆☆"
+    "nota": "☆☆☆☆☆",
+    "Motivo": "Cansei, nao sinto vontade de iniciar o jogo",
+    "Plano de ação": "pretendo voltar"
   },
   {
     "nome": "Bayonetta",
