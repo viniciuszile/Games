@@ -430,5 +430,17 @@
     "dificuldade": "C",
     "replay": "Não",
     "nota": "★★★★☆"
+  },
+  {
+    "nome": "Castlevania: Symphony of the Night\n",
+    "imagem": "https://raw.githubusercontent.com/viniciuszile/Games-Fotos-2025/main/castle.png",
+    "plataforma": "R36",
+    "inicio": "30/10/2026",
+    "termino": "0",
+    "situacao": "0",
+    "Horas De Jogo": "0",
+    "dificuldade": "0",
+    "replay": "Não",
+    "nota": "☆☆☆☆☆"
   }
 ]
